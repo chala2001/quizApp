@@ -1,7 +1,9 @@
 package com.example.quizzApp.Controller;
 
+import com.example.quizzApp.Dto.QuestionWrapper;
 import com.example.quizzApp.Dto.QuizDto;
 import com.example.quizzApp.Entity.Question;
+import com.example.quizzApp.Entity.Response;
 import com.example.quizzApp.Service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,13 @@ public class QuizController {
     }
 
     @GetMapping("get/{id}")
-    public ResponseEntity<List<Question>> getQuizQuestions(@PathVariable Integer id){
+    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id){
         return quizService.getQuizQuestions(id);
+    }
+
+    // URL: http://localhost:8080/quiz/submit/1
+    @PostMapping("submit/{id}")
+    public ResponseEntity<Integer> submitQuiz(@PathVariable Integer id, @RequestBody List<Response> responses){
+        return quizService.calculateResult(id, responses);
     }
 }
